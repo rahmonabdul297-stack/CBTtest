@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <meta http-equiv="refresh" content="0;url=/"> -->
+<link rel="shortcut icon" href="/WhatsApp Image 2026-06-02 at 8.05.42 PM.jpeg" type="image/x-icon">
+<title>COM 113 – Chapter 1 Exam</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+
+  :root {
+    --ink: #1a1209;
+    --paper: #faf6ee;
+    --cream: #f0e8d5;
+    --rust: #b94a1c;
+    --gold: #c8860a;
+    --navy: #1c2e4a;
+    --muted: #7a6a55;
+    --pass: #2d6a3f;
+    --fail: #9b1c1c;
+    --border: #d4c4a0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,160,120,0.18) 28px);
+  }
+
+  .exam-wrapper { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* LOGIN SCREEN */
+  #loginScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .login-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 40px 36px;
+    max-width: 460px;
+    width: 100%;
+    box-shadow: 0 8px 40px rgba(28,46,74,0.10);
+  }
+  .login-card .school { font-size: 20px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; text-align: center; }
+  .login-card h1 { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--navy); text-align: center; margin-bottom: 4px; }
+  .login-card p { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 28px; font-style: italic; }
+  .login-divider { height: 1px; background: var(--border); margin: 20px 0; }
+  .login-field { margin-bottom: 18px; }
+  .login-field label { display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .login-field input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 5px;
+    padding: 11px 14px; font-family: 'Source Serif 4', serif; font-size: 15px;
+    color: var(--ink); background: var(--paper); outline: none; transition: border-color 0.2s;
+  }
+  .login-field input:focus { border-color: var(--navy); background: white; }
+  .login-btn {
+    width: 100%; background: var(--navy); color: white; border: none; border-radius: 5px;
+    padding: 14px; font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; letter-spacing: 1px; transition: background 0.2s; margin-top: 6px;
+  }
+  .login-btn:hover { background: var(--rust); }
+  .login-error { color: var(--fail); font-size: 12px; margin-top: 8px; text-align: center; display: none; }
+  .login-rules {
+    background: #fff8ee; border-left: 4px solid var(--gold);
+    padding: 12px 16px; font-size: 12px; color: var(--muted);
+    line-height: 1.7; margin-top: 20px; border-radius: 0 4px 4px 0;
+  }
+  .login-rules strong { color: var(--ink); }
+
+  /* MAIN EXAM */
+  #examScreen { display: none; }
+
+  .header { text-align: center; padding: 32px 20px 24px; border-bottom: 3px double var(--border); margin-bottom: 32px; position: relative; }
+  .header::before, .header::after { content: '✦'; position: absolute; top: 32px; font-size: 18px; color: var(--gold); }
+  .header::before { left: 20px; } .header::after { right: 20px; }
+  .school-name { font-family: 'Playfair Display', serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .exam-title { font-family: 'Playfair Display', serif; font-size: clamp(22px,5vw,36px); font-weight: 900; color: var(--navy); line-height: 1.15; margin-bottom: 6px; }
+  .exam-subtitle { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 16px; }
+  .meta-row { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; font-size: 12px; color: var(--muted); letter-spacing: 0.5px; }
+  .meta-row span { border-right: 1px solid var(--border); padding-right: 24px; }
+  .meta-row span:last-child { border-right: none; padding-right: 0; }
+
+  /* STUDENT BANNER */
+  .student-banner {
+    background: var(--navy); color: white; padding: 14px 20px;
+    border-radius: 6px; margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .student-banner .sname { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+  .student-banner .smeta { font-size: 12px; opacity: 0.75; }
+
+  .instructions { background: #fff8ee; border-left: 4px solid var(--gold); padding: 14px 18px; font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+  .instructions strong { color: var(--ink); }
+
+  .score-display { background: var(--navy); color: white; padding: 20px 24px; border-radius: 6px; display: none; flex-direction: column; align-items: center; gap: 8px; margin: 24px 0; text-align: center; }
+  .score-display.visible { display: flex; }
+  .score-number { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; line-height: 1; }
+  .score-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; }
+  .score-grade { font-size: 20px; font-weight: 600; margin-top: 4px; }
+  .score-pass { color: #6ee7a0; } .score-fail { color: #fca5a5; }
+  .email-status { font-size: 13px; margin-top: 8px; padding: 8px 16px; border-radius: 4px; }
+  .email-ok { background: rgba(110,231,160,0.15); color: #6ee7a0; }
+  .email-err { background: rgba(252,165,165,0.15); color: #fca5a5; }
+
+  .progress-wrap { background: var(--border); border-radius: 20px; height: 6px; margin: 0 0 28px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--rust), var(--gold)); border-radius: 20px; transition: width 0.4s ease; width: 0%; }
+
+  .section-header { display: flex; align-items: center; gap: 12px; margin: 36px 0 20px; }
+  .section-badge { background: var(--navy); color: white; font-family: 'Playfair Display', serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; white-space: nowrap; }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+  .section-info { font-size: 12px; color: var(--muted); font-style: italic; white-space: nowrap; }
+
+  .q-block { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin-bottom: 14px; transition: border-color 0.2s; }
+  .q-block:hover { border-color: var(--muted); }
+  .q-block.answered { border-color: var(--gold); }
+  .q-block.correct { border-color: var(--pass); background: #f0faf4; }
+  .q-block.wrong { border-color: var(--fail); background: #fff5f5; }
+  .q-number { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .q-text { font-size: 15px; line-height: 1.65; margin-bottom: 14px; font-weight: 600; color: var(--navy); }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 500px) { .options { grid-template-columns: 1fr; } }
+  .opt-label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 4px; font-size: 13.5px; line-height: 1.5; transition: all 0.15s; background: var(--paper); -webkit-tap-highlight-color: transparent; }
+  .opt-label:hover { border-color: var(--navy); background: white; }
+  .opt-label input[type=radio] { display: none; }
+  .opt-key { min-width: 22px; height: 22px; border-radius: 50%; background: var(--cream); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--muted); flex-shrink: 0; margin-top: 1px; font-family: 'Playfair Display', serif; }
+  input[type=radio]:checked + .opt-key { background: var(--navy); border-color: var(--navy); color: white; }
+  .opt-label.correct-opt { border-color: var(--pass) !important; background: #f0faf4 !important; }
+  .opt-label.wrong-opt { border-color: var(--fail) !important; background: #fff5f5 !important; }
+  .feedback-tag { display: none; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; padding: 4px 10px; border-radius: 3px; width: fit-content; }
+  .feedback-tag.correct { display: inline-block; background: #dcfce7; color: var(--pass); }
+  .feedback-tag.wrong { display: inline-block; background: #fee2e2; color: var(--fail); }
+
+  .theory-block { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 22px 22px 18px; margin-bottom: 18px; }
+  .theory-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  .theory-num { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--rust); font-weight: 700; }
+  .marks-badge { font-size: 11px; background: var(--cream); border: 1px solid var(--border); padding: 3px 10px; border-radius: 20px; color: var(--muted); letter-spacing: 0.5px; }
+  .theory-q { font-size: 15px; line-height: 1.7; color: var(--navy); margin-bottom: 14px; font-weight: 600; }
+  .theory-textarea { width: 100%; min-height: 110px; border: 1.5px solid var(--border); border-radius: 4px; padding: 12px 14px; font-family: 'Source Serif 4', serif; font-size: 14px; color: var(--ink); background: var(--paper); resize: vertical; outline: none; transition: border-color 0.2s; background-image: repeating-linear-gradient(transparent, transparent 23px, rgba(180,160,120,0.25) 24px); line-height: 24px; }
+  .theory-textarea:focus { border-color: var(--rust); background: white; }
+  .theory-hint { font-size: 11.5px; color: var(--muted); font-style: italic; margin-top: 8px; }
+
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+  .btn { font-family: 'Playfair Display', serif; font-size: 14px; letter-spacing: 1px; padding: 13px 28px; border: none; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-weight: 700; }
+  .btn-primary { background: var(--navy); color: white; }
+  .btn-primary:hover { background: var(--rust); }
+  .btn-primary:disabled { background: var(--muted); cursor: not-allowed; }
+  .btn-secondary { background: transparent; border: 2px solid var(--navy); color: var(--navy); }
+  .btn-secondary:hover { background: var(--navy); color: white; }
+
+  .timer-wrap { position: sticky; top: 0; z-index: 10; background: var(--navy); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; border-bottom: 3px solid var(--gold); margin-bottom: 28px; }
+  .timer-value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; letter-spacing: 2px; }
+  .timer-warn { color: #fca5a5; }
+  .answered-count { font-size: 12px; opacity: 0.75; }
+
+  footer { text-align: center; margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11.5px; color: var(--muted); font-style: italic; }
+
+  /* SENDING OVERLAY */
+  #sendingOverlay {
+    display: none; position: fixed; inset: 0; background: rgba(28,46,74,0.85);
+    z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+  }
+  #sendingOverlay.show { display: flex; }
+  .spinner { width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #sendingOverlay p { color: white; font-family: 'Playfair Display', serif; font-size: 18px; }
+</style>
+</head>
+<body>
+
+<!-- SENDING OVERLAY -->
+<div id="sendingOverlay">
+  <div class="spinner"></div>
+  <p>Sending result to lecturer...</p>
+</div>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="school">Yaba College of Technology · COM 113</div>
+    <h1>Chapter 1 Exam</h1>
+    <p>Introduction to Computer Programming · 2025/2026</p>
+    <div class="login-divider"></div>
+
+    <div class="login-field">
+      <label>Full Name (Surname First)</label>
+      <input type="text" id="loginName" placeholder="e.g. Adeyemi Zacchaeus" />
+    </div>
+    <div class="login-field">
+      <label>Matric Number</label>
+      <input type="text" id="loginMatric" placeholder="e.g. YCT/25/0001" />
+    </div>
+    <div class="login-field">
+      <label>Programme</label>
+      <input type="text" id="loginProg" placeholder="e.g. ND Computer Technology" />
+    </div>
+
+    <button class="login-btn" onclick="startExam()">Begin Exam →</button>
+    <div class="login-error" id="loginError">Please fill in all fields before starting.</div>
+
+    <div class="login-rules">
+      <strong>Rules:</strong> Answer all 60 objective questions. Complete the 10 theory questions.
+      Your score will be sent automatically to your lecturer upon submission.
+      <strong>Time allowed: 90 minutes.</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EXAM SCREEN ===== -->
+<div id="examScreen">
+<div class="exam-wrapper">
+
+  <div class="header">
+    <div class="school-name">Yaba College of Technology · Computer Technology Department</div>
+    <div class="exam-title">Introduction to Computer Programming</div>
+    <div class="exam-subtitle">COM 113 · Chapter One Assessment · 2025/2026 Session</div>
+    <div class="meta-row">
+      <span>60 Objective Questions</span>
+      <span>10 Theory Questions</span>
+      <span>Total: 70 Marks</span>
+      <span>Time Allowed: 90 Minutes</span>
+    </div>
+  </div>
+
+  <!-- Student Banner -->
+  <div class="student-banner">
+    <div>
+      <div class="sname" id="bannerName">—</div>
+      <div class="smeta" id="bannerMeta">—</div>
+    </div>
+    <div style="font-size:12px;opacity:0.65;">Logged In ✓</div>
+  </div>
+
+  <div class="instructions">
+    <strong>Instructions:</strong> Answer <strong>ALL</strong> 60 objective questions by selecting the most correct option.
+    For theory, provide well-structured answers in the spaces provided.
+    Use of mobile phones or textbooks is <strong>NOT</strong> permitted.
+    Your result will be emailed to your lecturer automatically when you submit.
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-wrap">
+    <div>
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:2px">Time Remaining</div>
+      <div class="timer-value" id="timerDisplay">90:00</div>
+    </div>
+    <div class="answered-count" id="answeredCount">0 / 60 answered</div>
+    <button class="btn btn-primary" onclick="submitCBT()" style="padding:8px 18px;font-size:12px;" id="submitBtn">Submit Exam</button>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <!-- SCORE DISPLAY -->
+  <div class="score-display" id="scoreDisplay">
+    <div class="score-label">Your Score</div>
+    <div class="score-number" id="scoreNum">—</div>
+    <div class="score-label">out of 60</div>
+    <div class="score-grade" id="scoreGrade"></div>
+    <div class="email-status" id="emailStatus"></div>
+  </div>
+
+  <!-- SECTION A -->
+  <div class="section-header">
+    <div class="section-badge">Section A</div>
+    <div class="section-line"></div>
+    <div class="section-info">Objective — 60 Questions (1 mark each)</div>
+  </div>
+  <div id="cbtContainer"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="submitCBT()" id="submitBtn2">Submit & Send Result</button>
+    <button class="btn btn-secondary" onclick="resetCBT()">Reset CBT</button>
+  </div>
+
+  <!-- SECTION B -->
+  <div class="section-header" style="margin-top:52px;">
+    <div class="section-badge">Section B</div>
+    <div class="section-line"></div>
+    <div class="section-info">Theory — 10 Questions (1 mark each)</div>
+  </div>
+  <div id="theoryContainer"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="window.print()">🖨 Print Exam</button>
+  </div>
+
+  <footer>
+    COM 113 · Chapter One · Yaba College of Technology · 2025/2026 Academic Session<br>
+    "You can have everything in life that you want, if you will just help enough other people get what they want." – Zig Ziglar
+  </footer>
+
+</div>
+</div>
+
+<script>
+// ─── EmailJS Init ────────────────────────────────────────────────────────────
+(function(){ emailjs.init({ publicKey: "JV6KJELyS64DzDhMK" }); })();
+
+const SERVICE_ID  = "service_kpnwepl";
+const TEMPLATE_ID = "template_0vvjvhg";
+
+// ─── Student Info ────────────────────────────────────────────────────────────
+let studentName = '', studentMatric = '', studentProg = '';
+
+function startExam() {
+  studentName   = document.getElementById('loginName').value.trim();
+  studentMatric = document.getElementById('loginMatric').value.trim();
+  studentProg   = document.getElementById('loginProg').value.trim();
+
+  if (!studentName || !studentMatric || !studentProg) {
+    document.getElementById('loginError').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('examScreen').style.display  = 'block';
+
+  document.getElementById('bannerName').textContent = studentName;
+  document.getElementById('bannerMeta').textContent = studentMatric + ' · ' + studentProg;
+
+  renderCBT();
+  renderTheory();
+  startTimer();
+  window.scrollTo(0,0);
+}
+
+// ─── CBT Data ────────────────────────────────────────────────────────────────
+const cbtQuestions = [
+  { q: "A computer is not very useful unless we give it some _____.", opts: ["power", "instructions", "memory", "software"], ans: 1 },
+  { q: "A program is defined as a _____ of instructions that tells the computer what to do.", opts: ["set", "sequence", "collection", "list"], ans: 1 },
+  { q: "The name given to a set of programs used to carry out a particular job is called _____.", opts: ["Hardware", "Firmware", "Software", "Middleware"], ans: 2 },
+  { q: "Computer programming is often shortened to _____.", opts: ["computing", "coding", "scripting", "compiling"], ans: 1 },
+  { q: "A source code is written in an acceptable computer _____.", opts: ["operating system", "programming language", "compiler", "interpreter"], ans: 1 },
+  { q: "The series of activities involved in developing/producing computer programs is called _____.", opts: ["Coding", "Debugging", "Programming", "Testing"], ans: 2 },
+  { q: "Which of the following best describes 'software'?", opts: ["Physical components of a computer", "A set of programs together with documentation", "The CPU and RAM", "Input and output devices"], ans: 1 },
+  { q: "A source code may be a modification of _____ source or something completely new.", opts: ["an existing", "a deleted", "a compiled", "a binary"], ans: 0 },
+  { q: "Programming is described as a lot of fun and extraordinarily _____.", opts: ["difficult", "expensive", "useful", "complicated"], ans: 2 },
+  { q: "Learning programming helps develop _____ thinking skills for tackling complex problems.", opts: ["emotional", "creative", "critical", "illogical"], ans: 2 },
+  { q: "Computer programming is always done in some sort of _____.", opts: ["natural language", "programming language", "assembly language", "machine language"], ans: 1 },
+  { q: "Programming languages are written so that humans can _____ them.", opts: ["compile", "execute", "understand", "ignore"], ans: 2 },
+  { q: "Programming languages are formal and _____ enough to input into a computer machine.", opts: ["flexible", "rigorous", "ambiguous", "natural"], ans: 1 },
+  { q: "Programming languages are a way for you to express your thoughts about how to _____ a specific task.", opts: ["create", "perform", "compile", "debug"], ans: 1 },
+  { q: "The inherent influence a programming language has on a programmer's thinking is usually called the language's _____.", opts: ["syntax", "semantics", "paradigm", "structure"], ans: 2 },
+  { q: "There are _____ of programming languages — even thousands.", opts: ["dozens", "hundreds", "millions", "billions"], ans: 1 },
+  { q: "Learning one programming language gives a programmer 'Reading knowledge' of _____ others.", opts: ["none of", "a few", "several", "all"], ans: 2 },
+  { q: "Which languages are described as 'general purpose' languages for building software and computer applications?", opts: ["PHP and Python", "C, Java, etc.", "HTML and CSS", "SQL and XML"], ans: 1 },
+  { q: "Languages like PHP are meant for dynamic _____.", opts: ["applications", "websites", "games", "databases"], ans: 1 },
+  { q: "Python, Perl, etc. are examples of 'general _____ languages'.", opts: ["purpose", "scripting", "compiled", "markup"], ans: 1 },
+  { q: "A programming language is a set of _____ that enables instructions to be written for a computer.", opts: ["rules", "words", "codes", "symbols"], ans: 0 },
+  { q: "A prominent purpose of programming languages is to provide instructions to a _____.", opts: ["programmer", "user", "computer", "network"], ans: 2 },
+  { q: "Programming languages differ from most other forms of human expression in that they require a greater degree of _____.", opts: ["creativity", "precision and completeness", "ambiguity", "flexibility"], ans: 1 },
+  { q: "When using a natural language, human authors and speakers can be _____ and make small errors.", opts: ["precise", "ambiguous", "formal", "rigorous"], ans: 1 },
+  { q: "Computers do exactly what they are told to do; they cannot predict the _____ intent of the programmer.", opts: ["future", "actual", "creative", "logical"], ans: 1 },
+  { q: "New programs are usually only created if there is no _____ program that will perform the same job.", opts: ["existing", "new", "better", "compiled"], ans: 0 },
+  { q: "Which of the following is an example of an off-the-shelf package?", opts: ["Custom code written from scratch", "A database such as a pre-built system", "A word processor application", "An API endpoint"], ans: 2 },
+  { q: "Developing a sophisticated computer program may take many _____ of man hours.", opts: ["hundreds", "thousands", "millions", "dozens"], ans: 1 },
+  { q: "It is important that a program is planned _____ before it is written.", opts: ["loosely", "properly", "quickly", "informally"], ans: 1 },
+  { q: "Programmers usually follow the systems _____ cycle when developing a program.", opts: ["development", "life", "build", "runtime"], ans: 1 },
+  { q: "What does SDLC stand for?", opts: ["Software Design and Logic Cycle", "System Development Life Cycle", "Software Debugging and Launch Cycle", "System Design and Logic Chain"], ans: 1 },
+  { q: "A system can be defined as a collection of _____ working together to achieve some objectives.", opts: ["programs", "components", "users", "networks"], ans: 1 },
+  { q: "In system analysis and design terminology, System Development Life Cycle means a series of _____.", opts: ["programs", "steps or activities", "languages", "compilers"], ans: 1 },
+  { q: "The SDLC is undertaken in order to develop _____.", opts: ["hardware systems", "information systems", "network systems", "security systems"], ans: 1 },
+  { q: "Which of the following is the FIRST step in the SDLC?", opts: ["System Design", "System Analysis", "System Planning", "Testing and Integration"], ans: 2 },
+  { q: "Which of the following is the SECOND step in the SDLC?", opts: ["System Planning", "System Analysis", "System Design", "Implementation"], ans: 1 },
+  { q: "Which SDLC step involves drawing flowcharts and planning how a program will operate?", opts: ["System Planning", "System Analysis", "System Implementation", "Testing"], ans: 0 },
+  { q: "Which SDLC phase comes after System Design?", opts: ["System Planning", "System Analysis", "System Implementation", "Maintenance"], ans: 2 },
+  { q: "The last phase in the SDLC shown in the diagram is _____.", opts: ["Design", "Planning", "Maintenance", "Implementation"], ans: 2 },
+  { q: "A software development lifecycle provides a _____ for developing software and managing it through its entire lifecycle.", opts: ["shortcut", "framework", "language", "compiler"], ans: 1 },
+  { q: "The FIRST tip for learning programming is to start with a good book or _____ on programming.", opts: ["lecture", "tutorial", "video", "course"], ans: 1 },
+  { q: "A compiler/interpreter is used to convert ideas into _____.", opts: ["source code", "machine code", "high-level code", "pseudocode"], ans: 1 },
+  { q: "According to the text, you should study examples and put them into your _____.", opts: ["notes", "memory", "interpreter/compiler", "portfolio"], ans: 2 },
+  { q: "Tip 4 recommends trying to put your own ideas together to form a working _____ that does simple things.", opts: ["algorithm", "flowchart", "program", "database"], ans: 2 },
+  { q: "Once you start programming in your first language, you may want to learn a _____ one.", opts: ["simpler", "faster", "second", "compiled"], ans: 2 },
+  { q: "Programming is a _____ learning process — you should always be learning new things.", opts: ["quick", "constant", "static", "boring"], ans: 1 },
+  { q: "Tip 7 says: Learn how to type — it is _____.", opts: ["optional", "very helpful", "unnecessary", "discouraged"], ans: 1 },
+  { q: "Tip 8 says: Don't jump start into complex language like Java but start with _____ language.", opts: ["C or C++", "JavaScript", "BASIC or Python", "Assembly"], ans: 2 },
+  { q: "A simple language like BASIC encourages beginners and is composed of basically every _____.", opts: ["paradigm of the language", "little aspect in programming", "compiler directive", "syntax error"], ans: 1 },
+  { q: "Tip 9 says: Learn the _____ words (or keywords) of the language, as well as the syntax.", opts: ["difficult", "reserved", "complex", "natural"], ans: 1 },
+  { q: "Which of the following is NOT listed as a reason for learning computer programming?", opts: ["To develop problem solving skills", "To learn how to hack systems", "It guarantees employment opportunity", "It teaches patience and persistency"], ans: 1 },
+  { q: "Learning programming helps develop the ability to think _____ about a problem.", opts: ["randomly", "logically", "creatively", "loosely"], ans: 1 },
+  { q: "Programming guarantees _____ opportunity.", opts: ["learning", "employment", "networking", "social"], ans: 1 },
+  { q: "Tip 10 says: Start with something fun; motivate yourself to solving _____ problems.", opts: ["simple", "complex", "challenging", "mathematical"], ans: 2 },
+  { q: "Most computer programs are written in a _____ level language.", opts: ["low", "high", "machine", "binary"], ans: 1 },
+  { q: "Tools such as _____ are used to help plan how a program will operate.", opts: ["compilers", "flowcharts", "interpreters", "databases"], ans: 1 },
+  { q: "Which of these is an example of a 'general purpose' programming language?", opts: ["HTML", "PHP", "Python", "CSS"], ans: 2 },
+  { q: "The process of writing, testing, debugging and maintaining instructions is known as _____.", opts: ["Software", "Programming", "Compiling", "Designing"], ans: 1 },
+  { q: "Which phase of SDLC comes just BEFORE Maintenance in the diagram?", opts: ["Planning", "Design", "Testing and Integration", "Analysis"], ans: 2 },
+  { q: "A programmer has to think _____ about a problem — this is a key reason for learning programming.", opts: ["randomly", "logically", "quickly", "visually"], ans: 1 },
+];
+
+const theoryQuestions = [
+  { num: 1, marks: 1, q: "Define the term 'Software' as used in computer programming.", hint: "Refer to Section 1.1 — Definition" },
+  { num: 2, marks: 1, q: "What is Computer Programming? Give TWO activities involved in the programming process.", hint: "Think about the full process: writing, testing, debugging..." },
+  { num: 3, marks: 1, q: "Distinguish between a High-Level Language and a Low-Level Language in programming.", hint: "Consider ease of understanding, closeness to machine code..." },
+  { num: 4, marks: 1, q: "What is a programming paradigm? Give ONE example of a paradigm.", hint: "How does learning one language influence thinking about others?" },
+  { num: 5, marks: 1, q: "Define the System Development Life Cycle (SDLC) and list ALL its five phases in order.", hint: "Refer to Section 1.2 — the circular diagram" },
+  { num: 6, marks: 1, q: "Why is it important that a program is properly planned before it is written? Give TWO reasons.", hint: "Think about cost, time, and complexity of software development" },
+  { num: 7, marks: 1, q: "State FIVE reasons why computer programming is important/needed.", hint: "Refer to Section 1.4 — The need for Computer Programming" },
+  { num: 8, marks: 1, q: "What is the role of a compiler/interpreter in computer programming?", hint: "Refer to Tip 2 in Section 1.3" },
+  { num: 9, marks: 1, q: "Explain why programming languages require a greater degree of precision and completeness compared to natural human languages.", hint: "Computers cannot predict actual intent..." },
+  { num: 10, marks: 1, q: "Outline FIVE tips a beginner should follow when learning computer programming.", hint: "Refer to Section 1.3 — Tips on how to start learning Computer Programming" },
+];
+
+// ─── Render CBT ───────────────────────────────────────────────────────────────
+function renderCBT() {
+  const container = document.getElementById('cbtContainer');
+  container.innerHTML = '';
+  cbtQuestions.forEach((item, i) => {
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    block.id = `qblock-${i}`;
+    const letters = ['A','B','C','D'];
+    const optsHTML = item.opts.map((opt, j) => `
+      <label class="opt-label" id="opt-${i}-${j}">
+        <input type="radio" name="q${i}" value="${j}" onchange="handleAnswer(${i})">
+        <span class="opt-key">${letters[j]}</span>
+        <span>${opt}</span>
+      </label>`).join('');
+    block.innerHTML = `
+      <div class="q-number">Question ${i + 1} of ${cbtQuestions.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="options">${optsHTML}</div>
+      <div class="feedback-tag" id="fb-${i}"></div>`;
+    container.appendChild(block);
+  });
+  updateProgress();
+}
+
+function handleAnswer(qIdx) {
+  document.getElementById(`qblock-${qIdx}`).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress() {
+  const answered = document.querySelectorAll('input[type=radio]:checked').length;
+  document.getElementById('progressBar').style.width = (answered / cbtQuestions.length * 100) + '%';
+  document.getElementById('answeredCount').textContent = `${answered} / ${cbtQuestions.length} answered`;
+}
+
+// ─── Submit + Email ───────────────────────────────────────────────────────────
+let submitted = false;
+
+async function submitCBT() {
+  if (submitted) return;
+  submitted = true;
+  document.getElementById('submitBtn').disabled  = true;
+  document.getElementById('submitBtn2').disabled = true;
+  stopTimer();
+
+  let score = 0;
+  let wrongList = [];
+
+  cbtQuestions.forEach((item, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const block = document.getElementById(`qblock-${i}`);
+    const fb    = document.getElementById(`fb-${i}`);
+    document.querySelectorAll(`input[name="q${i}"]`).forEach(r => r.disabled = true);
+
+    if (selected) {
+      const val = parseInt(selected.value);
+      if (val === item.ans) {
+        score++;
+        block.classList.replace('answered','correct') || block.classList.add('correct');
+        fb.className = 'feedback-tag correct';
+        fb.textContent = '✓ Correct';
+      } else {
+        block.classList.add('wrong');
+        fb.className = 'feedback-tag wrong';
+        fb.textContent = `✗ Wrong — Correct: ${'ABCD'[item.ans]}`;
+        document.getElementById(`opt-${i}-${item.ans}`).classList.add('correct-opt');
+        document.getElementById(`opt-${i}-${val}`).classList.add('wrong-opt');
+        wrongList.push(`Q${i+1}`);
+      }
+    } else {
+      block.classList.add('wrong');
+      fb.className = 'feedback-tag wrong';
+      fb.textContent = `— Not answered — Ans: ${'ABCD'[item.ans]}`;
+      document.getElementById(`opt-${i}-${item.ans}`).classList.add('correct-opt');
+      wrongList.push(`Q${i+1} (skipped)`);
+    }
+  });
+
+  const pct   = Math.round(score / cbtQuestions.length * 100);
+  const grade = pct >= 70 ? 'PASS ✓' : 'FAIL ✗';
+  const now   = new Date().toLocaleString('en-NG', { dateStyle:'full', timeStyle:'short' });
+
+  // Show score
+  const sd = document.getElementById('scoreDisplay');
+  sd.classList.add('visible');
+  document.getElementById('scoreNum').textContent   = score;
+  const gradeEl = document.getElementById('scoreGrade');
+  gradeEl.textContent  = `${pct}% — ${grade}`;
+  gradeEl.className    = pct >= 70 ? 'score-grade score-pass' : 'score-grade score-fail';
+  sd.scrollIntoView({ behavior:'smooth', block:'center' });
+
+  // Send email
+  document.getElementById('sendingOverlay').classList.add('show');
+  const emailStatus = document.getElementById('emailStatus');
+
+  const wrongSummary = wrongList.length > 0
+    ? wrongList.join(', ')
+    : 'None — Perfect score!';
+
+  try {
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+      student_name: studentName,
+      matric_no:    studentMatric,
+      programme:    studentProg,
+      score:        `${score} / 60`,
+      grade:        `${pct}% — ${grade}`,
+      time:         now,
+      wrong_questions: wrongSummary,
+    });
+    emailStatus.className   = 'email-status email-ok';
+    emailStatus.textContent = '📧 Result sent to your lecturer successfully!';
+  } catch(err) {
+    emailStatus.className   = 'email-status email-err';
+    emailStatus.textContent = '⚠ Could not send email. Please inform your lecturer manually.';
+    console.error('EmailJS error:', err);
+  } finally {
+    document.getElementById('sendingOverlay').classList.remove('show');
+  }
+}
+
+function resetCBT() {
+  submitted = false;
+  document.getElementById('submitBtn').disabled  = false;
+  document.getElementById('submitBtn2').disabled = false;
+  document.querySelectorAll('input[type=radio]').forEach(r => { r.checked = false; r.disabled = false; });
+  document.querySelectorAll('.q-block').forEach(b => b.className = 'q-block');
+  document.querySelectorAll('.opt-label').forEach(l => l.classList.remove('correct-opt','wrong-opt'));
+  document.querySelectorAll('.feedback-tag').forEach(f => f.className = 'feedback-tag');
+  document.getElementById('scoreDisplay').classList.remove('visible');
+  updateProgress();
+  resetTimer();
+}
+
+// ─── Theory ───────────────────────────────────────────────────────────────────
+function renderTheory() {
+  const c = document.getElementById('theoryContainer');
+  c.innerHTML = '';
+  theoryQuestions.forEach(item => {
+    c.innerHTML += `
+    <div class="theory-block">
+      <div class="theory-meta">
+        <div class="theory-num">Question ${item.num}</div>
+        <div class="marks-badge">${item.marks} Mark</div>
+      </div>
+      <div class="theory-q">${item.q}</div>
+      <textarea class="theory-textarea" placeholder="Write your answer here..."></textarea>
+      <div class="theory-hint">💡 Hint: ${item.hint}</div>
+    </div>`;
+  });
+}
+
+// ─── Timer ────────────────────────────────────────────────────────────────────
+let timerInterval, timeLeft = 90 * 60;
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    if (timeLeft <= 0) { clearInterval(timerInterval); submitCBT(); return; }
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+    const d = document.getElementById('timerDisplay');
+    d.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    d.classList.toggle('timer-warn', timeLeft <= 300);
+  }, 1000);
+}
+function stopTimer()  { clearInterval(timerInterval); }
+function resetTimer() { stopTimer(); timeLeft = 90*60; document.getElementById('timerDisplay').textContent='90:00'; document.getElementById('timerDisplay').classList.remove('timer-warn'); startTimer(); }
+
+</script>
+</body>
+</html>
